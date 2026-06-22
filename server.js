@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 const express = require('express')
 const app = express();
 
@@ -226,5 +226,7 @@ app.delete('/user/:id', async(req, res)=>{
 
 
 
+console.log(process.env.MONGO_URL);
+console.log(process.env.JWT_SECRETKEY);
 
 
