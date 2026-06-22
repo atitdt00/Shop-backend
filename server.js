@@ -9,7 +9,7 @@ app.use(cors())
 
 //json web token
 const jwt= require('jsonwebtoken')
-const secrectkey= "123atit";
+
 
 //multer setup
 const multer = require('multer')
@@ -25,8 +25,6 @@ const storage= multer.diskStorage({
 })
 
 const upload= multer({storage: storage, limits: {fileSize: 1024 *1024 *2}})
-
-
 
 const mongoose= require('mongoose')
 mongoose.connect(process.env.MONGO_URI).then(()=>{ console.log(`connected to database`)}).catch((error)=>{
@@ -57,8 +55,6 @@ let userSchema= new mongoose.Schema({
 
 
 
-
-
 //Model 
 
 const categories= mongoose.model("categories", catagoriesSchema)
@@ -78,7 +74,7 @@ app.post('/login', async (req, res) => {
         if (user.password === password) {
             jwt.sign(
                 { email: user.email },
-                secrectkey,
+                process.env.JWT_SECRETKEY,
                 { expiresIn: '5h' },
                 (err, token) => {
 
@@ -119,7 +115,7 @@ const verifytoken = (req, res, next) => {
 
     const token = authHeader.split(' ')[1]; // ✅ FIX HERE
 
-    jwt.verify(token, secrectkey, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRETKEY, (err, decoded) => {
         if (err) {
             return res.status(401).json({
                 message: 'Invalid token'
