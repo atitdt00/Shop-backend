@@ -27,9 +27,17 @@ const storage= multer.diskStorage({
 const upload= multer({storage: storage, limits: {fileSize: 1024 *1024 *2}})
 
 const mongoose= require('mongoose')
-mongoose.connect(process.env.MONGO_URI).then(()=>{ console.log(`connected to database`)}).catch((error)=>{
-    console.log(`error connecting to database`, error)
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("MongoDB Connected");
+    app.listen(process.env.PORT, ()=>{
+    console.log(`server is ruunning on port ${process.env.PORT}`)
 })
+  })
+  .catch((err) => {
+    console.log("MongoDB Error:", err);
+  });
 
 
 
@@ -220,6 +228,3 @@ app.delete('/user/:id', async(req, res)=>{
 
 
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`server is ruunning on port ${process.env.PORT}`)
-})
